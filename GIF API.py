@@ -1,22 +1,918 @@
 import urllib,json
 import random
 
-"""
-Simple method that takes in a string, uses the GIPHY API and returns the json file for 25 gifs
-related to the search word.
-"""
-def gifgetter(word):
-    urlword =  word.replace(" ", "+") #take out spaces for url search
-    data = json.loads(urllib.urlopen("http://api.giphy.com/v1/gifs/search?q=" + urlword + "&api_key="
-                                     "Yi4YMIrlGAlJQYnrY3vb0YljKGMiF5hM&limit=5").read())
-    return data
+
+def gif_urls(lyrics):
+  """
+  Input: list of lyrics, where each element in the list is a string of the line from the song
+  Output: a list of gif urls
+  
+  NOT CURRENTLY USED IN THE CODE
+  """
+  urls = []
+  for line in lyrics:
+    urls.append(phrase_to_url(line))
+  return urls
 
 
 
-jsonData = json.dumps(gifgetter("spongebob"), sort_keys=True, indent=4) #dump out json object.
-print jsonData
-# gets total number of gifs returned
-num_gifs = len(json.loads(jsonData)["data"])
-# gets a URL for a random looping gif
-jsonDict = json.loads(jsonData)["data"][random.randrange(0,num_gifs)]["images"]["looping"][u'mp4']
-print "json Dict: ", jsonDict
+
+def gif_json(phrase):
+  """
+  Input: string of lyrics of a line
+  output: a json file of the top gifs related to the search
+  
+  uses the GIPHY API and returns the json file for 25 gifs
+  related to the search phrase.
+  """
+  url_word =  phrase.replace(" ", "+") #take out spaces for url search
+  data = json.loads(urllib.urlopen("http://api.giphy.com/v1/gifs/search?q=" + url_word + "&api_key="
+                                   "Yi4YMIrlGAlJQYnrY3vb0YljKGMiF5hM&limit=5").read())
+  return data
+
+def phrase_to_url(word):
+  """
+  Input: word or phrase of words
+  Output: the gif url for the json file
+  """
+  jsonData = json.dumps(gif_json(word), sort_keys=True, indent=4) #dump out json object.
+  # gets total number of gifs returned
+  num_gifs = len(json.loads(jsonData)["data"])
+  # gets a URL for a random looping gif
+  jsonDict = json.loads(jsonData)["data"][random.randrange(0,num_gifs)]["images"]["original"]["url"]
+  # [u'images'][u'original'][u'url']
+  return jsonDict
+
+def parse_lyrics(lyrics):
+  """
+  Input: the json file of a song
+  Output: a list of tuples containing the start time and the gif URL associated with each line in the song
+  """
+
+  lines = []
+  for line in lyrics["fragments"]:
+    start_time = line["begin"]
+    line = line["lines"][0]
+    if line != "":
+      lines.append((start_time, phrase_to_url(line)))
+  return lines
+
+
+# Test Case
+lyrics_json = {
+ "fragments": [
+  {
+   "begin": "0.000",
+   "children": [],
+   "end": "1.840",
+   "id": "f000001",
+   "language": "eng",
+   "lines": [
+    "Take me down"
+   ]
+  },
+  {
+   "begin": "1.840",
+   "children": [],
+   "end": "10.480",
+   "id": "f000002",
+   "language": "eng",
+   "lines": [
+    "Take me all the way down tonight, soon I'll be leaving"
+   ]
+  },
+  {
+   "begin": "10.480",
+   "children": [],
+   "end": "12.520",
+   "id": "f000003",
+   "language": "eng",
+   "lines": [
+    "Break me down"
+   ]
+  },
+  {
+   "begin": "12.520",
+   "children": [],
+   "end": "24.400",
+   "id": "f000004",
+   "language": "eng",
+   "lines": [
+    "Break me all the way down, before the night is over"
+   ]
+  },
+  {
+   "begin": "24.400",
+   "children": [],
+   "end": "27.040",
+   "id": "f000005",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "27.040",
+   "children": [],
+   "end": "28.440",
+   "id": "f000006",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "28.440",
+   "children": [],
+   "end": "30.480",
+   "id": "f000007",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "30.480",
+   "children": [],
+   "end": "34.400",
+   "id": "f000008",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "34.400",
+   "children": [],
+   "end": "34.400",
+   "id": "f000009",
+   "language": "eng",
+   "lines": [
+    ""
+   ]
+  },
+  {
+   "begin": "34.400",
+   "children": [],
+   "end": "36.440",
+   "id": "f000010",
+   "language": "eng",
+   "lines": [
+    "What it is, what it could be?"
+   ]
+  },
+  {
+   "begin": "36.440",
+   "children": [],
+   "end": "38.520",
+   "id": "f000011",
+   "language": "eng",
+   "lines": [
+    "My imagination runs fast"
+   ]
+  },
+  {
+   "begin": "38.520",
+   "children": [],
+   "end": "40.520",
+   "id": "f000012",
+   "language": "eng",
+   "lines": [
+    "Only if you comin' with me"
+   ]
+  },
+  {
+   "begin": "40.520",
+   "children": [],
+   "end": "42.680",
+   "id": "f000013",
+   "language": "eng",
+   "lines": [
+    "4 AM staying up past"
+   ]
+  },
+  {
+   "begin": "42.680",
+   "children": [],
+   "end": "44.280",
+   "id": "f000014",
+   "language": "eng",
+   "lines": [
+    "Or however long these drugs last"
+   ]
+  },
+  {
+   "begin": "44.280",
+   "children": [],
+   "end": "46.560",
+   "id": "f000015",
+   "language": "eng",
+   "lines": [
+    "Don't know why I live so fast"
+   ]
+  },
+  {
+   "begin": "46.560",
+   "children": [],
+   "end": "48.600",
+   "id": "f000016",
+   "language": "eng",
+   "lines": [
+    "They be telling me to slow down"
+   ]
+  },
+  {
+   "begin": "48.600",
+   "children": [],
+   "end": "50.480",
+   "id": "f000017",
+   "language": "eng",
+   "lines": [
+    "I be screaming out \"fuck that!\""
+   ]
+  },
+  {
+   "begin": "50.480",
+   "children": [],
+   "end": "52.240",
+   "id": "f000018",
+   "language": "eng",
+   "lines": [
+    "I really wanna take you down"
+   ]
+  },
+  {
+   "begin": "52.240",
+   "children": [],
+   "end": "54.200",
+   "id": "f000019",
+   "language": "eng",
+   "lines": [
+    "Moaning is how I wanna make you sound"
+   ]
+  },
+  {
+   "begin": "54.200",
+   "children": [],
+   "end": "56.240",
+   "id": "f000020",
+   "language": "eng",
+   "lines": [
+    "Can't wait until I get you home"
+   ]
+  },
+  {
+   "begin": "56.240",
+   "children": [],
+   "end": "58.080",
+   "id": "f000021",
+   "language": "eng",
+   "lines": [
+    "Fuck that I wanna take you now"
+   ]
+  },
+  {
+   "begin": "58.080",
+   "children": [],
+   "end": "60.320",
+   "id": "f000022",
+   "language": "eng",
+   "lines": [
+    "Let\u2019s do it all, have a ball"
+   ]
+  },
+  {
+   "begin": "60.320",
+   "children": [],
+   "end": "62.120",
+   "id": "f000023",
+   "language": "eng",
+   "lines": [
+    "Hook up tonight in the ladies' room stall"
+   ]
+  },
+  {
+   "begin": "62.120",
+   "children": [],
+   "end": "63.880",
+   "id": "f000024",
+   "language": "eng",
+   "lines": [
+    "Follow you there I'll let you make the call"
+   ]
+  },
+  {
+   "begin": "63.880",
+   "children": [],
+   "end": "66.720",
+   "id": "f000025",
+   "language": "eng",
+   "lines": [
+    "You can text all your friends say you'll see them tomorrow"
+   ]
+  },
+  {
+   "begin": "66.720",
+   "children": [],
+   "end": "67.720",
+   "id": "f000026",
+   "language": "eng",
+   "lines": [
+    "That's if you're down"
+   ]
+  },
+  {
+   "begin": "67.720",
+   "children": [],
+   "end": "69.720",
+   "id": "f000027",
+   "language": "eng",
+   "lines": [
+    "She never fucked the first night until now"
+   ]
+  },
+  {
+   "begin": "69.720",
+   "children": [],
+   "end": "70.760",
+   "id": "f000028",
+   "language": "eng",
+   "lines": [
+    "Let me, plow"
+   ]
+  },
+  {
+   "begin": "70.760",
+   "children": [],
+   "end": "72.280",
+   "id": "f000029",
+   "language": "eng",
+   "lines": [
+    "Faded, I'm drunk off the brown"
+   ]
+  },
+  {
+   "begin": "72.280",
+   "children": [],
+   "end": "73.680",
+   "id": "f000030",
+   "language": "eng",
+   "lines": [
+    "Stayed up all night on the town"
+   ]
+  },
+  {
+   "begin": "73.680",
+   "children": [],
+   "end": "75.840",
+   "id": "f000031",
+   "language": "eng",
+   "lines": [
+    "Act like tomorrow just doesn't exist"
+   ]
+  },
+  {
+   "begin": "75.840",
+   "children": [],
+   "end": "77.920",
+   "id": "f000032",
+   "language": "eng",
+   "lines": [
+    "Time isn't real ain't shit on my wrists"
+   ]
+  },
+  {
+   "begin": "77.920",
+   "children": [],
+   "end": "80.240",
+   "id": "f000033",
+   "language": "eng",
+   "lines": [
+    "Let go of everything then you have bliss"
+   ]
+  },
+  {
+   "begin": "80.240",
+   "children": [],
+   "end": "82.400",
+   "id": "f000034",
+   "language": "eng",
+   "lines": [
+    "Then she told me this"
+   ]
+  },
+  {
+   "begin": "82.400",
+   "children": [],
+   "end": "82.400",
+   "id": "f000035",
+   "language": "eng",
+   "lines": [
+    ""
+   ]
+  },
+  {
+   "begin": "82.400",
+   "children": [],
+   "end": "82.960",
+   "id": "f000036",
+   "language": "eng",
+   "lines": [
+    "Take me down"
+   ]
+  },
+  {
+   "begin": "82.960",
+   "children": [],
+   "end": "91.680",
+   "id": "f000037",
+   "language": "eng",
+   "lines": [
+    "Take me all the way down tonight, soon I'll be leaving"
+   ]
+  },
+  {
+   "begin": "91.680",
+   "children": [],
+   "end": "99.480",
+   "id": "f000038",
+   "language": "eng",
+   "lines": [
+    "Break me down"
+   ]
+  },
+  {
+   "begin": "99.480",
+   "children": [],
+   "end": "105.280",
+   "id": "f000039",
+   "language": "eng",
+   "lines": [
+    "Break me all the way down, before the night is over"
+   ]
+  },
+  {
+   "begin": "105.280",
+   "children": [],
+   "end": "106.960",
+   "id": "f000040",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "106.960",
+   "children": [],
+   "end": "108.960",
+   "id": "f000041",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "108.960",
+   "children": [],
+   "end": "112.200",
+   "id": "f000042",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "112.200",
+   "children": [],
+   "end": "114.240",
+   "id": "f000043",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "114.240",
+   "children": [],
+   "end": "114.280",
+   "id": "f000044",
+   "language": "eng",
+   "lines": [
+    ""
+   ]
+  },
+  {
+   "begin": "114.280",
+   "children": [],
+   "end": "116.040",
+   "id": "f000045",
+   "language": "eng",
+   "lines": [
+    "Let's get lost tonight"
+   ]
+  },
+  {
+   "begin": "116.040",
+   "children": [],
+   "end": "118.000",
+   "id": "f000046",
+   "language": "eng",
+   "lines": [
+    "You can be supreme Kate Moss tonight"
+   ]
+  },
+  {
+   "begin": "118.000",
+   "children": [],
+   "end": "120.120",
+   "id": "f000047",
+   "language": "eng",
+   "lines": [
+    "Turn up in the Soho loft tonight"
+   ]
+  },
+  {
+   "begin": "120.120",
+   "children": [],
+   "end": "122.240",
+   "id": "f000048",
+   "language": "eng",
+   "lines": [
+    "Do drugs, take 10 shots tonight"
+   ]
+  },
+  {
+   "begin": "122.240",
+   "children": [],
+   "end": "125.080",
+   "id": "f000049",
+   "language": "eng",
+   "lines": [
+    "Awesome I\u2019m naked with Naked and Famous jeans on the floor"
+   ]
+  },
+  {
+   "begin": "125.080",
+   "children": [],
+   "end": "127.240",
+   "id": "f000050",
+   "language": "eng",
+   "lines": [
+    "Live a wild life, you ain't seen this before"
+   ]
+  },
+  {
+   "begin": "127.240",
+   "children": [],
+   "end": "129.400",
+   "id": "f000051",
+   "language": "eng",
+   "lines": [
+    "You should give brains and I mean this for sure"
+   ]
+  },
+  {
+   "begin": "129.400",
+   "children": [],
+   "end": "130.840",
+   "id": "f000052",
+   "language": "eng",
+   "lines": [
+    "That's what genius is for"
+   ]
+  },
+  {
+   "begin": "130.840",
+   "children": [],
+   "end": "132.840",
+   "id": "f000053",
+   "language": "eng",
+   "lines": [
+    "Beautiful girl that I just met on tour"
+   ]
+  },
+  {
+   "begin": "132.840",
+   "children": [],
+   "end": "134.880",
+   "id": "f000054",
+   "language": "eng",
+   "lines": [
+    "Another good girl that I'll probably destroy"
+   ]
+  },
+  {
+   "begin": "134.880",
+   "children": [],
+   "end": "136.800",
+   "id": "f000055",
+   "language": "eng",
+   "lines": [
+    "Her life was stable until she met me"
+   ]
+  },
+  {
+   "begin": "136.800",
+   "children": [],
+   "end": "138.920",
+   "id": "f000056",
+   "language": "eng",
+   "lines": [
+    "Sheltered and safe so she never gets freed"
+   ]
+  },
+  {
+   "begin": "138.920",
+   "children": [],
+   "end": "140.960",
+   "id": "f000057",
+   "language": "eng",
+   "lines": [
+    "But she loves trouble she's drawn to the danger"
+   ]
+  },
+  {
+   "begin": "140.960",
+   "children": [],
+   "end": "143.000",
+   "id": "f000058",
+   "language": "eng",
+   "lines": [
+    "Never goes crazy, I bet I can change her"
+   ]
+  },
+  {
+   "begin": "143.000",
+   "children": [],
+   "end": "145.000",
+   "id": "f000059",
+   "language": "eng",
+   "lines": [
+    "I could make her fall in love with a stranger"
+   ]
+  },
+  {
+   "begin": "145.000",
+   "children": [],
+   "end": "147.040",
+   "id": "f000060",
+   "language": "eng",
+   "lines": [
+    "Switch up the pace I don't mean Danny Granger"
+   ]
+  },
+  {
+   "begin": "147.040",
+   "children": [],
+   "end": "149.480",
+   "id": "f000061",
+   "language": "eng",
+   "lines": [
+    "Can\u2019t wait until tomorrow? I'm fine with today"
+   ]
+  },
+  {
+   "begin": "149.480",
+   "children": [],
+   "end": "151.560",
+   "id": "f000062",
+   "language": "eng",
+   "lines": [
+    "You pretty as fuck and I'm tryna slay"
+   ]
+  },
+  {
+   "begin": "151.560",
+   "children": [],
+   "end": "153.560",
+   "id": "f000063",
+   "language": "eng",
+   "lines": [
+    "\"Let's do this right now\" is what I'm trying to say"
+   ]
+  },
+  {
+   "begin": "153.560",
+   "children": [],
+   "end": "155.680",
+   "id": "f000064",
+   "language": "eng",
+   "lines": [
+    "I can tell you don't love him, you're dying to stray"
+   ]
+  },
+  {
+   "begin": "155.680",
+   "children": [],
+   "end": "157.600",
+   "id": "f000065",
+   "language": "eng",
+   "lines": [
+    "I do not give a fuck 'bout your ex"
+   ]
+  },
+  {
+   "begin": "157.600",
+   "children": [],
+   "end": "159.720",
+   "id": "f000066",
+   "language": "eng",
+   "lines": [
+    "I'm not looking for love, I'm just looking for sex"
+   ]
+  },
+  {
+   "begin": "159.720",
+   "children": [],
+   "end": "161.960",
+   "id": "f000067",
+   "language": "eng",
+   "lines": [
+    "Tension between us had me feeling vexed"
+   ]
+  },
+  {
+   "begin": "161.960",
+   "children": [],
+   "end": "163.760",
+   "id": "f000068",
+   "language": "eng",
+   "lines": [
+    "Then she sent me a text"
+   ]
+  },
+  {
+   "begin": "163.760",
+   "children": [],
+   "end": "163.760",
+   "id": "f000069",
+   "language": "eng",
+   "lines": [
+    ""
+   ]
+  },
+  {
+   "begin": "163.760",
+   "children": [],
+   "end": "164.760",
+   "id": "f000070",
+   "language": "eng",
+   "lines": [
+    "Take me down"
+   ]
+  },
+  {
+   "begin": "164.760",
+   "children": [],
+   "end": "170.560",
+   "id": "f000071",
+   "language": "eng",
+   "lines": [
+    "Take me all the way down tonight, soon I'll be leaving"
+   ]
+  },
+  {
+   "begin": "170.560",
+   "children": [],
+   "end": "175.720",
+   "id": "f000072",
+   "language": "eng",
+   "lines": [
+    "Break me down"
+   ]
+  },
+  {
+   "begin": "175.720",
+   "children": [],
+   "end": "186.600",
+   "id": "f000073",
+   "language": "eng",
+   "lines": [
+    "Break me all the way down, before the night is over"
+   ]
+  },
+  {
+   "begin": "186.600",
+   "children": [],
+   "end": "188.560",
+   "id": "f000074",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "188.560",
+   "children": [],
+   "end": "189.960",
+   "id": "f000075",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "189.960",
+   "children": [],
+   "end": "190.680",
+   "id": "f000076",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "190.680",
+   "children": [],
+   "end": "192.920",
+   "id": "f000077",
+   "language": "eng",
+   "lines": [
+    "Let's get lost"
+   ]
+  },
+  {
+   "begin": "192.920",
+   "children": [],
+   "end": "192.920",
+   "id": "f000078",
+   "language": "eng",
+   "lines": [
+    ""
+   ]
+  },
+  {
+   "begin": "192.920",
+   "children": [],
+   "end": "216.720",
+   "id": "f000079",
+   "language": "eng",
+   "lines": [
+    "That's that endless summer, never going back to school"
+   ]
+  },
+  {
+   "begin": "216.720",
+   "children": [],
+   "end": "221.120",
+   "id": "f000080",
+   "language": "eng",
+   "lines": [
+    "We do what we want to, can't tell me no rules"
+   ]
+  },
+  {
+   "begin": "221.120",
+   "children": [],
+   "end": "225.360",
+   "id": "f000081",
+   "language": "eng",
+   "lines": [
+    "Every night on the town, going out all the time"
+   ]
+  },
+  {
+   "begin": "225.360",
+   "children": [],
+   "end": "229.240",
+   "id": "f000082",
+   "language": "eng",
+   "lines": [
+    "And I'm tryna take you down, only thing on my mind"
+   ]
+  },
+  {
+   "begin": "229.240",
+   "children": [],
+   "end": "229.240",
+   "id": "f000083",
+   "language": "eng",
+   "lines": [
+    ""
+   ]
+  },
+  {
+   "begin": "229.240",
+   "children": [],
+   "end": "230.360",
+   "id": "f000084",
+   "language": "eng",
+   "lines": [
+    "Take me down"
+   ]
+  },
+  {
+   "begin": "230.360",
+   "children": [],
+   "end": "241.360",
+   "id": "f000085",
+   "language": "eng",
+   "lines": [
+    "Take me all the way down, soon I'll be leaving"
+   ]
+  }
+ ]
+}
+print parse_lyrics(lyrics_json)
+
+# print phrase_to_url("hello")
