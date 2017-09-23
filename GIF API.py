@@ -36,12 +36,11 @@ def phrase_to_url(word):
   Output: the gif url for the json file
   """
   jsonData = json.dumps(gif_json(word), sort_keys=True, indent=4) #dump out json object.
-  # print jsonData
   # gets total number of gifs returned
   num_gifs = len(json.loads(jsonData)["data"])
   # gets a URL for a random looping gif
-  jsonDict = json.loads(jsonData)["data"][random.randrange(0,num_gifs)][u'images'][u'original'][u'url']
-  # [random.randrange(0,num_gifs)]["original"]["url"][u'mp4']
+  jsonDict = json.loads(jsonData)["data"][random.randrange(0,num_gifs)]["images"]["original"]["url"]
+  # [u'images'][u'original'][u'url']
   return jsonDict
 
 def parse_lyrics(lyrics):
@@ -915,3 +914,5 @@ lyrics_json = {
  ]
 }
 print parse_lyrics(lyrics_json)
+
+# print phrase_to_url("hello")
