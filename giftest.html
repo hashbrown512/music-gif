@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--jquery link -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>gif tester</title>
+    <!--CSS link -->
+  <link rel = "stylesheet" href = "/Users/Justinfan/Downloads/VisualCode/My First Game/gameCSS.css" type = "text/css">
+</head>
+<body>
+    <img id="gifslideshow" src="https://media2.giphy.com/media/qg5pk8s2h5kJy/giphy.gif" />
+        
+    <script> 
+        var myImage = document.getElementById("gifslideshow");
+        var imageIndex=0;
+        var imgArray = ['https://media2.giphy.com/media/qg5pk8s2h5kJy/giphy.gif', 
+        'https://media0.giphy.com/media/3oEhn8HISbX78FH8L6/giphy.gif', 
+        'https://media3.giphy.com/media/l41lRTRi4lYbaTTcQ/giphy.gif',
+        'https://media3.giphy.com/media/iuZmthzIwfKco/giphy.gif']
+        
+        var timeArray = [10, 100, 100, 500]
+        
+        //Function to change the image. 
+        function changeImage () {
+            myImage.setAttribute("src", imgArray[imageIndex]);
+            imageIndex++;
+            if (imageIndex>=imgArray.length) {
+                imageIndex=0;
+            }
+            console.log("called")
+            setTimeout(changeImage, timeArray[imageIndex])
+        }
+        changeImage()
+       
+    </script>
+    
+</body>
+</html>
+<!-- 
+<input type = "text" id = "myText" value = "spongebob" onkeydown= "gifUrlGrabber(value)" />
+<!-javascript link -->
+<!-- <script type = "text/javascript" src = "/Users/Justinfan/Downloads/VisualCode/My First Game/giftestJava.js"> </script> -->
+<!-- <script>
+    var gifurl = ['https://media2.giphy.com/media/qg5pk8s2h5kJy/giphy.mp4', 'https://media1.giphy.com/media/l41K2dG6bwSVx6U7K/giphy.mp4']
+</script> -->
+<!-- <script>
+        
+                var gifs = [];
+        
+                /**
+                 function to grab a url of a gif for a sequence 
+                */
+                function gifUrlGrabber(string_word) {
+                    //jquery get method
+                    var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=ryan+gosling&api_key=Yi4YMIrlGAlJQYnrY3vb0YljKGMiF5hM" 
+                    +"&limit=5");
+                    xhr.done(function(data) { console.log("success got data", data); });
+                    gifs.push(xhr[0])
+                    console.log(xhr[data])
+                    alert("searched gifs")
+                }
+        
+        
+            </script>
+            <div id="_giphy_tv"></div>
+            <script>
+        
+                var testArray = ["bball", "cat", "dogs"]
+                var testArray2 = ["hockey", "horse", "bell"]
+                
+                var ind = 0
+                var _giphy_tv_tag = "Before";
+                function wordsetter(word) {
+                    //giffy tv function.
+                    _giphy_tv_tag = word[ind];
+                    var g = document.createElement('script'); g.type = 'text/javascript'; g.async = true;
+                    g.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'giphy.com/static/js/widgets/tv.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(g, s);
+                    ind = ind + 1 % testArray.length
+                }
+        
+                wordsetter(testArray)
+                function cleardiv() {
+                    document.getElementById("_giphy_tv").remove();
+        
+                }
+                setTimeout(cleardiv, 3000)
+                // wordsetter(testArray2)
+        
+                
+            </script> -->
