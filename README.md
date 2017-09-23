@@ -1,5 +1,7 @@
 # music-gif
 
+Michael Blankenship
+
 Music GIF Project
 
 In Progress
