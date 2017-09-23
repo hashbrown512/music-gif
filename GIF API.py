@@ -15,6 +15,8 @@ def gifgetter(word):
 
 jsonData = json.dumps(gifgetter("spongebob"), sort_keys=True, indent=4) #dump out json object.
 print jsonData
-# parses the json file to return a URL of a random gif from the gifs that are returned in the search
-jsonDict = json.loads(jsonData)["data"][random.randrange(0,10)]["images"]["480w_still"]
-# print jsonDict
+# gets total number of gifs returned
+num_gifs = len(json.loads(jsonData)["data"])
+# gets a URL for a random looping gif
+jsonDict = json.loads(jsonData)["data"][random.randrange(0,num_gifs)]["images"]["looping"][u'mp4']
+print "json Dict: ", jsonDict
