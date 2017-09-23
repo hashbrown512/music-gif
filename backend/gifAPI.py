@@ -32,7 +32,7 @@ def phrase_to_url(word):
     # gets a URL for a random looping gif
     json_dict = json.loads(json_data)["data"][random.randrange(0, num_gifs)]["images"]["original"]["url"]
     # [u'images'][u'original'][u'url']
-    #print 'JSON DICT: ' + json_dict
+    # print 'JSON DICT: ' + json_dict
     return json_dict
 
 
@@ -45,10 +45,10 @@ def parse_lyrics(lyrics):
     Input: the json file of a song
     Output: a list of tuples containing the start time and the gif URL associated with each line in the song
     """
-
+    print 'Searching for relevant GIFs'
     lines = []
     for lyricInfo in lyrics["fragments"]:
-        #print lyricInfo
+        # print lyricInfo
         start_time = lyricInfo["begin"]
         lyric_phrase = lyricInfo["lines"][0]
         filtered_phrase = remove_non_ascii(lyric_phrase)
@@ -56,12 +56,8 @@ def parse_lyrics(lyrics):
         # print 'filter phrase: ' + filtered_phrase
         if filtered_phrase != "":
             lines.append((start_time, phrase_to_url(filtered_phrase)))
-    #print lines
+    # print lines
     return lines
-
-# print parse_lyrics(lyrics_json)
-
-# print phrase_to_url("hello")
 
 
 def gif_urls(lyrics):
