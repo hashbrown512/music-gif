@@ -5,6 +5,7 @@ import lyricScraper
 import youtubeToAudio
 import gifAPI
 import os.path
+import pprint
 
 
 def get_timestamped_gifs(youtube_url):
@@ -21,5 +22,5 @@ def get_timestamped_gifs(youtube_url):
     # Get the GIFs from Giphy
     timed_gifs = gifAPI.parse_lyrics(syncedLyricsJson)  # get the tuples of (time, gif_url)
     print 'Found GIFs, here they are with associated times: '
-    print timed_gifs
+    pprint.pprint(timed_gifs)
     print 'DONE'
