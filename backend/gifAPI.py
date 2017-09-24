@@ -1,5 +1,7 @@
-import urllib, json
+import urllib
+import json
 import random
+import safygiphy
 
 
 # with open("testFiles/letsGetLost.json", "r") as data_file:
@@ -15,10 +17,15 @@ def gif_json(phrase):
     uses the GIPHY API and returns the json file for 25 gifs
     related to the search phrase.
     """
+
     url_word = phrase.replace(" ", "+")  # take out spaces for url search
-    data = json.loads(urllib.urlopen("http://api.giphy.com/v1/gifs/search?q=" + url_word + "&api_key="
-                                                                                           "Yi4YMIrlGAlJQYnrY3vb0YljKGMiF5hM&limit=5").read())
-    return data
+    g = safygiphy.Giphy(token='Yi4YMIrlGAlJQYnrY3vb0YljKGMiF5hM')
+    response = g.translate(s=phrase)
+    #print phrase + ' Wrapper ' + str(response)
+    #data = json.loads(urllib.urlopen("http://api.giphy.com/v1/gifs/search?q=" + url_word + "&api_key=Yi4YMIrlGAlJQYnrY3vb0YljKGMiF5hM&limit=25").read())
+    #print phrase + ' Raw ' + str(data)
+    #return data
+    return response
 
 
 def phrase_to_url(word):
@@ -30,9 +37,11 @@ def phrase_to_url(word):
     # gets total number of gifs returned
     num_gifs = len(json.loads(json_data)["data"])
     # gets a URL for a random looping gif
-    json_dict = json.loads(json_data)["data"][random.randrange(0, num_gifs)]["images"]["original"]["url"]
+    #json_dict = json.loads(json_data)["data"][random.randrange(0, num_gifs)]["images"]["original"]["url"]
+    json_dict = json.loads(json_data)["data"]["images"]["original"]["url"]
+
     # [u'images'][u'original'][u'url']
-    #print 'JSON DICT: ' + json_dict
+    # print 'JSON DICT: ' + json_dict
     return json_dict
 
 
@@ -45,23 +54,26 @@ def parse_lyrics(lyrics):
     Input: the json file of a song
     Output: a list of tuples containing the start time and the gif URL associated with each line in the song
     """
-
-    lines = []
+    print 'Searching for relevant GIFs'
+    timeGifPairs = []
     for lyricInfo in lyrics["fragments"]:
-        #print lyricInfo
-        start_time = lyricInfo["begin"]
+        # print lyricInfo
+        duration = float(lyricInfo["end"]) - float(lyricInfo["begin"])
+        # print duration
         lyric_phrase = lyricInfo["lines"][0]
         filtered_phrase = remove_non_ascii(lyric_phrase)
         # print 'lyric phrase: ' + lyric_phrase
         # print 'filter phrase: ' + filtered_phrase
         if filtered_phrase != "":
-            lines.append((start_time, phrase_to_url(filtered_phrase)))
-    #print lines
-    return lines
+            timeGifPairs.append({duration: phrase_to_url(filtered_phrase)})
 
-# print parse_lyrics(lyrics_json)
+    # convert array of tuples to JSON Array of KV pairs
+    # This writes a json file which has the GIFs in order from beginning
+    # of the song to the end, and is in pairs of (gif_duration, gif_url)
+    with open('timed_gifs.json', 'w') as outfile:
+        json.dump(timeGifPairs, outfile)
 
-# print phrase_to_url("hello")
+    return timeGifPairs
 
 
 def gif_urls(lyrics):
