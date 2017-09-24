@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import send_file
 from flask import request
+import json
 
 
 app = Flask(__name__)
@@ -12,21 +13,45 @@ app = Flask(__name__)
 @app.route("/")
 def homepage():
 	try:
-		return send_file('../client/index.html')
+		return send_file('../client/giftest.html')
 	except Exception as e:
 		return str(e)
 
-@app.route('/song', methods = ['POST'])
-def process_url():
+# @app.route('/song', methods = ['POST'])
+# def process_url():
 
-	data = request.get_json()
-	song = data["song"]
-	print("received")
-	print(song)
+# 	print(request.form)
+# 	data = request.get_json()
+# 	print(data)
+# 	x = json.loads(request.form)[0]
+# 	print(x)
+# 	# print(song)
+
+
+# 	# Might need to convert to Unicode
+
+# 	# Need to call processing function on song
+
+# 	return "NEED TO IMPLEMENT"
+
+
+@app.route('/test', methods = ['POST'])
+def saveget():
+	print("in process")
+	a=request.args.get('song', '')
+	print(a)
+
+	# print(request.form)
+	# data = request.get_json()
+	# print(data)
+	# x = json.loads(request.form)[0]
+	# print(x)
+	# print(song)
 
 
 	# Might need to convert to Unicode
 
 	# Need to call processing function on song
 
-	return "NEED TO IMPLEMENT"
+	print("finished")
+	return "The name of the song is: " + a
