@@ -6,8 +6,6 @@ import youtubeToAudio
 import gifAPI
 import os.path
 
-# TODO Calculate diffs in start times
-
 
 def get_timestamped_gifs(youtube_url):
     song_filename = youtubeToAudio.youtube_to_audio(youtube_url)  # download audio, get the filename

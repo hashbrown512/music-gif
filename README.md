@@ -9,3 +9,8 @@ In Progress
 Checking git works
 
 Erik Yamada
+
+youtube-dl
+safygiphy
+aeneas
+
