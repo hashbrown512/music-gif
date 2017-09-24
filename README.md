@@ -1,14 +1,9 @@
-# music-gif
-
-Michael Blankenship
-
-Music GIF Project
-
-In Progress
-
-Checking git works
-
-Erik Yamada
+# GIF Music Video Maker
+Authors:
+Michael Blankenship,
+Erik Yamada,
+Harrison Brown,
+Justin Fan
 
 API Installations:
 
@@ -21,7 +16,7 @@ hombrew style: brew install youtube-dl
 NEED TO INSTALL safygiphy:
 sudo pip install safygiphy
 
-NEED TO INSTALL aeneas:
+NEED TO INSTALL Aeneas:
 
 brew install ffmpeg
 
