@@ -11,19 +11,24 @@ Checking git works
 Erik Yamada
 
 API Installations:
-install homebrew: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-YoutubeDL
+NEED TO INSTALL homebrew: 
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+NEED TO INSTALL YoutubeDL:
 hombrew style: brew install youtube-dl
-pip style: sudo -H pip install --upgrade youtube-dl
 
-safygiphy:
-pip install safygiphy
+NEED TO INSTALL safygiphy:
+sudo pip install safygiphy
 
-aeneas:
+NEED TO INSTALL aeneas:
+
 brew install ffmpeg
+
 brew install ffprobe
+
 pip install numpy
+
 pip install aeneas
 
 
