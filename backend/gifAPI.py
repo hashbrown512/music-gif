@@ -65,7 +65,8 @@ def parse_lyrics(lyrics):
         # print 'lyric phrase: ' + lyric_phrase
         # print 'filter phrase: ' + filtered_phrase
         if filtered_phrase != "":
-            timeGifPairs.append({duration: phrase_to_url(filtered_phrase)})
+            timeGifPairs.append({'url': phrase_to_url(filtered_phrase),
+                                 'duration': duration})
 
     # convert array of tuples to JSON Array of KV pairs
     # This writes a json file which has the GIFs in order from beginning
