@@ -20,10 +20,8 @@ NEED TO INSTALL Aeneas:
 
 brew install ffmpeg
 
-brew install ffprobe
+sudo pip install numpy
 
-pip install numpy
-
-pip install aeneas
+sudo pip install aeneas
 
 
