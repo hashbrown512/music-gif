@@ -49,13 +49,13 @@ def parse_lyrics(lyrics):
     lines = []
     for lyricInfo in lyrics["fragments"]:
         # print lyricInfo
-        start_time = lyricInfo["begin"]
+        duration = float(lyricInfo["end"]) - float(lyricInfo["begin"])
         lyric_phrase = lyricInfo["lines"][0]
         filtered_phrase = remove_non_ascii(lyric_phrase)
         # print 'lyric phrase: ' + lyric_phrase
         # print 'filter phrase: ' + filtered_phrase
         if filtered_phrase != "":
-            lines.append((start_time, phrase_to_url(filtered_phrase)))
+            lines.append((duration, phrase_to_url(filtered_phrase)))
     # print lines
     return lines
 
